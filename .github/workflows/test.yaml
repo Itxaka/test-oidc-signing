@@ -1,0 +1,27 @@
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # undocumented OIDC support.
+    env:
+      COSIGN_EXPERIMENTAL: 1 # use keyless signing
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@f700e6fbbab82f6897758a3af7a8dede4e308656 # v1.2.1
+      - name: Build dockerfile
+        run: |
+          docker build . -t itxaka/test:latest
+          docker push itxaka/test:latest
+      - name: Cosign keyless
+        run: |
+          cosign sign itxaka/test:latest
