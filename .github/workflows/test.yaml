@@ -26,4 +26,4 @@ jobs:
           docker push itxaka/test:latest
       - name: Cosign keyless
         run: |
-          cosign sign itxaka/test:latest
+          sudo -E cosign sign itxaka/test:latest
