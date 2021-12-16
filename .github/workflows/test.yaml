@@ -17,7 +17,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Install Cosign
-        uses: sigstore/cosign-installer@f700e6fbbab82f6897758a3af7a8dede4e308656 # v1.2.1
+        uses: sigstore/cosign-installer@1.4.1
       - name: Build dockerfile
         run: |
           docker build . -t itxaka/test:latest
