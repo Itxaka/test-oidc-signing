@@ -16,5 +16,5 @@ jobs:
       - name: Fix cosign binary for root
         run: |
           cosign_bin="$HOME/.cosign/cosign"
-          sudo ln -s cosign_bin /usr/bin/cosign
+          sudo ln -s $cosign_bin /usr/bin/cosign
       - run: sudo cosign version
