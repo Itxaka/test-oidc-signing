@@ -9,6 +9,7 @@ jobs:
       id-token: write  # undocumented OIDC support.
     env:
       COSIGN_EXPERIMENTAL: 1 # use keyless signing
+      LUET_INSTALL_FROM_COS_REPO: true
     steps:
       - uses: actions/checkout@v2
       - name: Login to Docker Hub
@@ -16,12 +17,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@f700e6fbbab82f6897758a3af7a8dede4e308656 # v1.2.1
+      - name: Install luet
+        run: curl -s https://raw.githubusercontent.com/rancher-sandbox/cOS-toolkit/master/scripts/get_luet.sh | sudo -E bash
+      - name: Install cosign
+        run: sudo -E luet install -y toolchain/cosign
       - name: Build dockerfile
         run: |
           docker build . -t itxaka/test:latest
           docker push itxaka/test:latest
       - name: Cosign keyless
         run: |
-          cosign sign itxaka/test:latest
+          sudo -E bash -c "cosign sign itxaka/test:latest"
