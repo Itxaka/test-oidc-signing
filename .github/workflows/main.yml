@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  cosignbinary:
     runs-on: ubuntu-latest
     steps:
       - name: Install Cosign
@@ -13,4 +13,8 @@ jobs:
           cosign-release: 'v1.4.1'
       - name: Check install!
         run: cosign version
+      - name: Fix cosign binary for root
+        run: |
+          cosign_bin="$HOME/.cosign/cosign"
+          sudo ln -s cosign_bin /usr/bin/cosign
       - run: sudo cosign version
