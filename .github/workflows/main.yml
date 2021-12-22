@@ -7,7 +7,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    steps:
       - name: Install Cosign
         uses: sigstore/cosign-installer@main
         with:
